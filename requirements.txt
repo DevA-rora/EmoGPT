@@ -1,6 +1,6 @@
+deepface
+tf-keras
 openai
 opencv-python
 matplotlib
-deepface
-tf-keras
-streamlit
+python-doten:

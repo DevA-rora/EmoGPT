@@ -1,14 +1,14 @@
-# Import the nessecary libraries:
-from openai import OpenAI
-import cv2
-import matplotlib as plt
 from deepface import DeepFace
-from dotenv import load_dotenv, find_dotenv
+
+
+print(DeepFace.__version__)
+
+
+# Import the nessecary libraries:
+import cv2
+from deepface import DeepFace
 import os
 
-# Load the environment variables:
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path)
 
 # Starting the Emotion detection analysis:
 
@@ -66,50 +66,3 @@ cv2.destroyAllWindows()
 
 # Setup OpenAI ChatGPT Conversation:
 
-# Load the ChatGPT client with the API key:
-client = OpenAI(api_key=os.getenv("API_KEY"))
-
-# Initialize the list of messages with a user message:
-messages = [
-    {
-        "role": "system",
-        "content": "You are a helpful assistant who will be given the ability to recognize the emotions of the user. Your job is to make sure that your responses are tailored to the user's emotion. An example is if the user asks something such as: I can't play the piano, what should I do? give a response tailored to the emotion the user is experiencing. At the end of your response, give the emotion that you detected from the user."
-    },
-    # {
-    #     "role": "user",
-    #     "content": "Hello, who are you?"
-    # }
-]
-
-# Begin the text chain with ChatGPT:
-while True:
-    new_message = input("You: ").strip()
-    
-    if new_message == "exit":
-        break
-
-    # Optionally, determine the dominant emotion of the user
-    new_message += f" (User is feeling {dominant_emotion})"
-
-    # Append the new message to the list of messages:
-    messages.append({
-        "role": "user",
-        "content": new_message
-    })
-
-    response = client.chat.completions.create(model="gpt-3.5-turbo",
-    messages=messages)
-
-    # Extract the assistant's message from the response:
-    assistant_message = response.choices[0].message.content
-
-    # Print the assistant's message:
-    print("Assistant:", assistant_message)
-
-    # Append the assistant's message to the list of messages:
-    messages.append({
-        "role": "assistant",
-        "content": assistant_message
-    })
-
-print("Conversation ended.")
