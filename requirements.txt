@@ -4,3 +4,6 @@ openai
 opencv-python
 matplotlib
 python-dotenv
+
+# streamlit
+watchdog
