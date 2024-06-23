@@ -1,3 +1,5 @@
+# I found some code online and attempted to run it, action age stays at 0% though...
+
 import cv2
 import streamlit as st
 import numpy as np
