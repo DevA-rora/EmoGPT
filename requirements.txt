@@ -3,4 +3,4 @@ tf-keras
 openai
 opencv-python
 matplotlib
-python-doten:
+python-dotenv

@@ -62,7 +62,3 @@ while True:
 # Release video capture:
 video_capture.release()
 cv2.destroyAllWindows()
-
-
-# Setup OpenAI ChatGPT Conversation:
-

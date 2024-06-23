@@ -75,10 +75,6 @@ messages = [
         "role": "system",
         "content": "You are a helpful assistant who will be given the ability to recognize the emotions of the user. Your job is to make sure that your responses are tailored to the user's emotion. An example is if the user asks something such as: I can't play the piano, what should I do? give a response tailored to the emotion the user is experiencing. At the end of your response, give the emotion that you detected from the user."
     },
-    # {
-    #     "role": "user",
-    #     "content": "Hello, who are you?"
-    # }
 ]
 
 # Begin the text chain with ChatGPT:
