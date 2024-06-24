@@ -1,95 +1,97 @@
-# Import required libraries:
 import cv2
-import streamlit as st
-from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
-from deepface import DeepFace
-import time
+import streamlit as st
+from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.preprocessing.image import img_to_array # type: ignore
+import os
+
+# Load pre-trained models
+face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+emotion_model = load_model('emotion_model.h5')  # You'll need to train or download this model
+
+emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
+
+def detect_emotion(frame):
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = face_classifier.detectMultiScale(gray, 1.3, 5)
+
+    for (x, y, w, h) in faces:
+        roi_gray = gray[y:y + h, x:x + w]
+        roi_gray = cv2.resize(roi_gray, (48, 48), interpolation=cv2.INTER_AREA)
+
+        if np.sum([roi_gray]) != 0:
+            roi = roi_gray.astype('float') / 255.0
+            roi = img_to_array(roi)
+            roi = np.expand_dims(roi, axis=0)
+
+            prediction = emotion_model.predict(roi)[0]
+            emotion = emotion_labels[prediction.argmax()]
+            return emotion
+
+    return None
 
 def main():
-    st.title("Emotion Detection with Webcam and DeepFace!")
-
-    # Page text:
+    st.title("Emotion Detection with Webcam")
     st.write("This app uses your webcam to detect your emotions in real-time.")
-    st.write("Then, you will be able to see the detected emotion after you click the stop button.")
-    st.write("After you get all your emotion stats, you will then be able to talk to ChatGPT. It will have the knowledge of your emotions and it will give responses accordingly.")
 
-    # Initialize session state variables
     if 'snapshot_taken' not in st.session_state:
         st.session_state.snapshot_taken = False
     if 'photo_analyzed' not in st.session_state:
         st.session_state.photo_analyzed = False
 
-    # Take snapshot button:
     if not st.session_state.snapshot_taken:
         if st.button("Take Snapshot"):
             take_photo()
             st.session_state.snapshot_taken = True
 
-    # Analyze photo button:
     if st.session_state.snapshot_taken and not st.session_state.photo_analyzed:
         if st.button("Analyze Photo"):
             analyze_photo("person_snapshot.png")
             st.session_state.photo_analyzed = True
 
 def take_photo():
-    # Initialize webcam capture:
     cam = cv2.VideoCapture(0)
     
-    # If the camera is not opened, display an error:
     if not cam.isOpened():
         st.error("Unable to access the camera")
         return
 
-    # Placeholder for displaying the webcam feed
     stframe = st.empty()
-
-    # Begin the while true loop:
+    
     while True:
-        # Sleep for 0.1 seconds so that cv2 can catch up:
-        time.sleep(0.1)
-
-        # Read the frame from the webcam
         ret, frame = cam.read()
         if not ret:
             st.error("Failed to grab frame")
             break
 
-        # Convert the frame to RGB format for Streamlit
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         stframe.image(frame_rgb, channels="RGB")
 
-        # Sleep for 0.1 seconds so that cv2 can catch up:
-        time.sleep(0.1)
-
-        # Initialize the variable to store the photo that was taken:
         img_path = "person_snapshot.png"
-
-        # Write the image to the storage
         cv2.imwrite(img_path, frame)
 
-        st.success(f"""
-            Success! \n
-            {img_path} was captured!
-        """)
-        break
+        if os.path.exists(img_path):
+            st.success(f"Success! {img_path} was captured!")
+            break
+        else:
+            st.error("Failed to save the image.")
+
+    cam.release()
 
 def analyze_photo(photo):
-    # Load the image
     img = cv2.imread(photo)
+    if img is None:
+        st.error("Could not load the image. Please check the file path.")
+        return
 
-    # Detect the face from the image
-    try:
-        face = DeepFace.detectFace(img,
-            target_size = (224, 224,),
-            detector_backend = "opencv"
-        )
+    emotion = detect_emotion(img)
 
-        # Display the face using Streamlit's st.image
-        st.image(face, channels="RGB", caption="Detected Face")
-    except Exception as e:
-        st.error(f"Error in analyzing photo: {str(e)}")
+    if emotion:
+        st.write(f"Detected Emotion: {emotion}")
+    else:
+        st.write("No face detected in the image.")
+
+    st.image(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), channels="RGB", caption="Analyzed Image")
 
 if __name__ == "__main__":
     main()

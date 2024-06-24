@@ -13,9 +13,6 @@ load_dotenv(dotenv_path)
 # Starting the Emotion detection analysis:
 
 # Import detection models:
-emotion_model = DeepFace.build_model('Emotion') # Emotion detection model
-gender_model =  DeepFace.build_model('Gender') # Gender detection model
-race_model = DeepFace.build_model('Race') # Race detection model
 
 # Initialise camera:
 video_capture = cv2.VideoCapture(0)
