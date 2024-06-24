@@ -1,7 +1,8 @@
 # deepface
 # tf-keras
 openai
-opencv-python
+opencv-python-headless
+# opencv-python
 matplotlib
 python-dotenv
 streamlit
