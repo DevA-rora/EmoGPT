@@ -1,26 +1,14 @@
-libgl1-mesa-glx
-streamlit
-opencv-python-headless
-numpy==1.23.5
-tensorflow-cpu
-openai
-
-
-
 # deepface
 # tf-keras
-# openai
-# opencv-python-headless
-# opencv-python
-# libgl1
-# matplotlib
-# python-dotenv
-# streamlit
-# watchdog
-# tensorflow
+openai
+opencv-python
+matplotlib
+python-dotenv
+streamlit
+watchdog
+tensorflow
+numpy
 
-# make sure you use python 3.10:
-
-
+# to use tensorflow-metal, make sure you use python 3.10:
 # using the packages below will allow you to use tensorflow with the M1 chip, allowing GPU usage.
-# tensorflow-metal
+tensorflow-metal

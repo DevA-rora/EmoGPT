@@ -4,8 +4,6 @@ import numpy as np
 from tensorflow.keras.models import load_model #type: ignore
 from tensorflow.keras.preprocessing.image import img_to_array # type: ignore
 
-cv2.useOptimized()
-
 # Load pre-trained model and cascade classifier
 @st.cache_resource
 def load_resources():
