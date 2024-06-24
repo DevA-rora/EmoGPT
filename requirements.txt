@@ -1,13 +1,12 @@
-deepface
-tf-keras
+# deepface
+# tf-keras
 openai
 opencv-python
 matplotlib
 python-dotenv
 streamlit
 watchdog
-
+tensorflow
 # make sure you use python 3.10:
 # using the packages below will allow you to use tensorflow with the M1 chip, allowing GPU usage.
-tensorflow-macos
 tensorflow-metal
