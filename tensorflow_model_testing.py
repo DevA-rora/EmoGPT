@@ -8,7 +8,8 @@ from tensorflow.keras.preprocessing.image import img_to_array # type: ignore
 @st.cache_resource
 def load_resources():
     face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    emotion_model = load_model('cnn_emotion_detection.h5')  # You'll need to provide this model file
+    emotion_model = load_model('cnn_emotion_detection.h5')  # Load the model for the emotion recognition
+    # According to the Kaggle source, this model is accurate roughly in the 80-90% range.
     return face_classifier, emotion_model
 
 face_classifier, emotion_model = load_resources()
