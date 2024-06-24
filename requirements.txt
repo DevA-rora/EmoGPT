@@ -3,6 +3,7 @@
 openai
 opencv-python-headless
 # opencv-python
+libgl1
 matplotlib
 python-dotenv
 streamlit
