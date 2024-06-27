@@ -1,5 +1,3 @@
-# deepface
-# tf-keras
 openai
 opencv-python
 matplotlib
